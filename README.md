@@ -48,7 +48,59 @@
 
 Ход работы:
 
+- Начнем с того, что добавим объект на сцену, позволяющий работать с YandexSDK.
 
+![image](https://user-images.githubusercontent.com/54228342/203308526-97d2c5fb-9a5b-41b2-b43e-c739e8a66989.png)
+
+- Создадим скрипт CheckConnectYG, который будет проверять, авторизован пользователь или нет. Если нет, то будет предлагать авторизироваться.
+
+```c#
+
+using UnityEngine;
+using YG;
+
+public class CheckConnectYG : MonoBehaviour
+{
+    private void OnEnable() => YandexGame.GetDataEvent += CheckSDK;
+    private void OnDisable() => YandexGame.GetDataEvent -= CheckSDK;
+    void Start()
+    {
+        if (YandexGame.SDKEnabled)
+        {
+            CheckSDK();
+        }
+    }
+
+    public void CheckSDK()
+    {
+        if (YandexGame.auth)
+        {
+            Debug.Log("User authorization ok");
+        }
+        else
+        {
+            Debug.Log("User not authorization");
+            YandexGame.AuthDialog();
+        }
+    }
+}
+
+```
+
+- Создадим на сцене пустой объект YandexManager, в который добавим только что созданный скрипт. В этом объекте будут храниться все скрипты для работы с YandexSDK.
+
+![image](https://user-images.githubusercontent.com/54228342/203309490-4665e1b4-5a0e-49d4-9602-002832946a2e.png)
+
+- Если запустим проект в Unity, то увидим логи внизу.
+
+![image](https://user-images.githubusercontent.com/54228342/203309695-e76e82dd-b8ed-4e1f-84d5-a6b813ca81bb.png)
+
+- Выводит False, потому что SDK будет работать только на локальном сервире, либо на сервисе Яндекс.Игр. Поэтому нужно создать сборку, и загрузить ее на Яндекс.Игры, после чего можно будет проверить функционал скрипта.
+- Создадим сборку тем же способам, каким создавали в прошлых работах и загрузим .zip файл на сервис. Так же нужно будет поставить галочку напротив поддержки авторизации.
+
+![image](https://user-images.githubusercontent.com/54228342/203310614-a2f1eb6c-2e1e-41ef-9aac-1abdeddd9a5e.png)
+
+- После загрузки выйдем из аккаунта Янедкс.Игр и попробуем зайти в игру.
 
 ## Задание 2
 ### Описать не менее трех дополнительных функций Яндекс SDK, которые могут быть интегрированы в игру.
