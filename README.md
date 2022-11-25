@@ -109,6 +109,103 @@ public class CheckConnectYG : MonoBehaviour
 ![image](https://user-images.githubusercontent.com/54228342/203326883-81cb0164-53d5-4c92-93a7-0fdab8c93999.png)
 
 - Как мы видим, в начале вышел наш лог из скрипта "User not authorization", но после авторизации в консоле вывелось "User authorization ok". Тем самым, мы убедились, что скрипт полностью работает.
+- Теперь создадим сохранение очков пользователя на сервере. Для этого зайдем на игровую сцену и также добавим объект YandexGame. Далее изменим скрипт SaveYG в папке YandexGame > WorkingData.
+
+```c#
+
+
+namespace YG
+{
+    [System.Serializable]
+    public class SavesYG
+    {
+        public bool isFirstSession = true;
+        public string language = "ru";
+        public bool feedbackDone;
+        public bool promptDone;
+
+        // Ваши сохранения
+        public int score;
+    }
+}
+
+```
+
+- Сохраним скрипт и удалим скрипт SaverTest из папкм YandexGame > Example > ExampleScritps, чтобы избавиться от ошибок. Теперь можем зайти в скрипт DragonPicker, чтобы добавить строчки кода. Они позволят сохранять прогресс пользователя. В нашем случае пока что будут сохраняться лишь очки. Новые строчки и методы выделены комментарием "new".
+
+```c#
+
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using YG; // new
+using TMPro; // new
+
+public class DragonPicker : MonoBehaviour
+{
+    private void OnEnable() => YandexGame.GetDataEvent += GetLoadSave; // new
+    private void OnDisable() => YandexGame.GetDataEvent -= GetLoadSave; // new
+
+    public GameObject energyShieldPrefab;
+    public int numEnergyShield = 3;
+    public float energyShieldBottomY = -6;
+    public float energyShieldRadius = 1.5f;
+    public List<GameObject> shieldList;
+    public TextMeshProUGUI scoreGT; // new
+
+    private void Start()
+    {
+        if (YandexGame.SDKEnabled) GetLoadSave(); // new
+
+        shieldList = new();
+
+        for (int i = 1; i <= numEnergyShield; i++)
+        {
+            GameObject tShieldGo = Instantiate(energyShieldPrefab);
+            tShieldGo.transform.position = new(0, energyShieldBottomY, 0);
+            tShieldGo.transform.localScale = new(1 * i, 1 * i, 1 * i);
+            shieldList.Add(tShieldGo);
+        }
+    }
+
+    public void DragonEggDestroyed()
+    {
+        GameObject[] tDragonEggArray = GameObject.FindGameObjectsWithTag("Dragon Egg");
+        foreach (GameObject tGO in tDragonEggArray)
+            Destroy(tGO);
+
+        int shieldIndex = shieldList.Count - 1;
+        GameObject tShieldGo = shieldList[shieldIndex];
+        shieldList.RemoveAt(shieldIndex);
+        Destroy(tShieldGo);
+
+        if (shieldList.Count == 0)
+        {
+            GameObject scoreGO = GameObject.Find("Score"); // new
+            scoreGT = scoreGO.GetComponent<TextMeshProUGUI>(); // new
+            UserSave(int.Parse(scoreGT.text)); // new
+
+            SceneManager.LoadScene("_0Scene");
+
+            GetLoadSave(); // new
+        }
+    }
+
+    public void GetLoadSave() // new
+    {
+        Debug.Log(YandexGame.savesData.score);
+    }
+
+    public void UserSave(int currentScore) // new
+    {
+        YandexGame.savesData.score = currentScore;
+        YandexGame.SaveProgress();
+    }
+}
+
+```
+
+- Сохраняем изменения, и теперь можно снова билдить проект и заливать его на Яндекс.Игры, где проверим работоспособность скрипта.
 
 ## Задание 2
 ### Описать не менее трех дополнительных функций Яндекс SDK, которые могут быть интегрированы в игру.
