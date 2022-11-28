@@ -218,6 +218,33 @@ public class DragonPicker : MonoBehaviour
 ![image](https://user-images.githubusercontent.com/54228342/203937644-a233f298-1688-45e3-a2ab-85ef33a05997.png)
 
 - Благодаря скрипту данные сохраняются, поэтому, если начать новую игру, тогда в консоли выведется количество сохраненных очков за прошлые игры(в моем случае 5).
+- Далее будем сохранять лучший результат игрока за одну сессию и показывать ему в главном меню игры. Создадим на сцене новый текст, напишем "Best Score:" и поместим его в правый нижний угол.
+
+![image](https://user-images.githubusercontent.com/54228342/204282871-f107ab80-8c14-4de3-b2dc-f5eff58eb9e4.png)
+
+- Зайдем в скрипт "SavesYG", добавив туда новую строчку. Это будет переменная, в которой и будет сохраняться лучший результат.
+
+```c#
+
+namespace YG
+{
+    [System.Serializable]
+    public class SavesYG
+    {
+        public bool isFirstSession = true;
+        public string language = "ru";
+        public bool feedbackDone;
+        public bool promptDone;
+
+        // Ваши сохранения
+        public int score;
+        public int bestScore; // new
+    }
+}
+
+```
+
+- 
 
 ## Задание 2
 ### Описать не менее трех дополнительных функций Яндекс SDK, которые могут быть интегрированы в игру.
