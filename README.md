@@ -244,6 +244,48 @@ namespace YG
 
 ```
 
+- Теперь реализуем функционал сохранения лучшего результата. в скрипте "DragonPicker" добавим и редактируем строчки.
+
+```c#
+
+...
+
+public void DragonEggDestroyed()
+    {
+        GameObject[] tDragonEggArray = GameObject.FindGameObjectsWithTag("Dragon Egg");
+        foreach (GameObject tGO in tDragonEggArray)
+            Destroy(tGO);
+
+        int shieldIndex = shieldList.Count - 1;
+        GameObject tShieldGo = shieldList[shieldIndex];
+        shieldList.RemoveAt(shieldIndex);
+        Destroy(tShieldGo);
+
+        if (shieldList.Count == 0)
+        {
+            GameObject scoreGO = GameObject.Find("Score");
+            scoreGT = scoreGO.GetComponent<TextMeshProUGUI>();
+            UserSave(int.Parse(scoreGT.text), YandexGame.savesData.bestScore); // new
+
+            SceneManager.LoadScene("_0Scene");
+
+            GetLoadSave();
+        }
+    }
+    
+...
+
+    public void UserSave(int currentScore, int currentBestScore) // new
+    {
+        YandexGame.savesData.score = currentScore;
+
+        if (currentScore > currentBestScore) YandexGame.savesData.bestScore = currentScore; // new
+
+        YandexGame.SaveProgress();
+    }
+
+```
+
 - 
 
 ## Задание 2
