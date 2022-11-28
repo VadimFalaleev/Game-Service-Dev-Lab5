@@ -286,7 +286,48 @@ public void DragonEggDestroyed()
 
 ```
 
-- 
+- Функционал готов, осталось лишь показывать игроку этот самый лучший результат. Реализуем это в скрипте "CheckConnectYG".
+
+```c#
+
+using UnityEngine;
+using YG;
+using TMPro; // new
+
+public class CheckConnectYG : MonoBehaviour
+{
+    private void OnEnable() => YandexGame.GetDataEvent += CheckSDK;
+    private void OnDisable() => YandexGame.GetDataEvent -= CheckSDK;
+
+    private TextMeshProUGUI scoreBest; // new
+
+    void Start()
+    {
+        if (YandexGame.SDKEnabled)
+        {
+            CheckSDK();
+        }
+    }
+
+    public void CheckSDK()
+    {
+        if (YandexGame.auth)
+        {
+            Debug.Log("User authorization ok");
+        }
+        else
+        {
+            Debug.Log("User not authorization");
+            YandexGame.AuthDialog();
+        }
+
+        GameObject scoreBO = GameObject.Find("BestScore"); // new
+        scoreBest = scoreBO.GetComponent<TextMeshProUGUI>(); // new
+        scoreBest.text = "Best score: " + YandexGame.savesData.bestScore.ToString(); // new
+    }
+}
+
+```
 
 ## Задание 2
 ### Описать не менее трех дополнительных функций Яндекс SDK, которые могут быть интегрированы в игру.
