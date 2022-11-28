@@ -11,5 +11,6 @@ namespace YG
 
         // Ваши сохранения
         public int score;
+        public int bestScore;
     }
 }

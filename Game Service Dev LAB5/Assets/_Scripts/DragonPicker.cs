@@ -1,24 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using YG; // new
-using TMPro; // new
+using YG;
+using TMPro;
 
 public class DragonPicker : MonoBehaviour
 {
-    private void OnEnable() => YandexGame.GetDataEvent += GetLoadSave; // new
-    private void OnDisable() => YandexGame.GetDataEvent -= GetLoadSave; // new
+    private void OnEnable() => YandexGame.GetDataEvent += GetLoadSave;
+    private void OnDisable() => YandexGame.GetDataEvent -= GetLoadSave;
 
     public GameObject energyShieldPrefab;
     public int numEnergyShield = 3;
     public float energyShieldBottomY = -6;
     public float energyShieldRadius = 1.5f;
     public List<GameObject> shieldList;
-    public TextMeshProUGUI scoreGT; // new
+    public TextMeshProUGUI scoreGT;
+    public TextMeshProUGUI playerName;
 
     private void Start()
     {
-        if (YandexGame.SDKEnabled) GetLoadSave(); // new
+        if (YandexGame.SDKEnabled) GetLoadSave();
 
         shieldList = new();
 
@@ -44,24 +45,31 @@ public class DragonPicker : MonoBehaviour
 
         if (shieldList.Count == 0)
         {
-            GameObject scoreGO = GameObject.Find("Score"); // new
-            scoreGT = scoreGO.GetComponent<TextMeshProUGUI>(); // new
-            UserSave(int.Parse(scoreGT.text)); // new
+            GameObject scoreGO = GameObject.Find("Score");
+            scoreGT = scoreGO.GetComponent<TextMeshProUGUI>();
+            UserSave(int.Parse(scoreGT.text), YandexGame.savesData.bestScore);
 
             SceneManager.LoadScene("_0Scene");
 
-            GetLoadSave(); // new
+            GetLoadSave();
         }
     }
 
-    public void GetLoadSave() // new
+    public void GetLoadSave()
     {
         Debug.Log(YandexGame.savesData.score);
+
+        GameObject playerNamePrefabGUI = GameObject.Find("PlayerName");
+        playerName = playerNamePrefabGUI.GetComponent<TextMeshProUGUI>();
+        playerName.text = YandexGame.playerName;
     }
 
-    public void UserSave(int currentScore) // new
+    public void UserSave(int currentScore, int currentBestScore)
     {
         YandexGame.savesData.score = currentScore;
+
+        if (currentScore > currentBestScore) YandexGame.savesData.bestScore = currentScore;
+
         YandexGame.SaveProgress();
     }
 }

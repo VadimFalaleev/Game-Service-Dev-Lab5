@@ -1,10 +1,14 @@
 using UnityEngine;
 using YG;
+using TMPro;
 
 public class CheckConnectYG : MonoBehaviour
 {
     private void OnEnable() => YandexGame.GetDataEvent += CheckSDK;
     private void OnDisable() => YandexGame.GetDataEvent -= CheckSDK;
+
+    private TextMeshProUGUI scoreBest;
+
     void Start()
     {
         if (YandexGame.SDKEnabled)
@@ -24,5 +28,9 @@ public class CheckConnectYG : MonoBehaviour
             Debug.Log("User not authorization");
             YandexGame.AuthDialog();
         }
+
+        GameObject scoreBO = GameObject.Find("BestScore");
+        scoreBest = scoreBO.GetComponent<TextMeshProUGUI>();
+        scoreBest.text = "Best score: " + YandexGame.savesData.bestScore.ToString();
     }
 }
