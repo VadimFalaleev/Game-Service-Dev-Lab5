@@ -329,6 +329,48 @@ public class CheckConnectYG : MonoBehaviour
 
 ```
 
+- Создадим еще одну фишку - отображение имени игрока над персонажем. На сцене уровня создадим текст и назовем его PlayerName. Это же и напишем в самом тексте. Расположим текст над головой игрока, корректируя положение и размер текста.
+
+![image](https://user-images.githubusercontent.com/54228342/204292209-ef9b73a6-0633-44a3-a22c-7f7cb151eb48.png)
+
+- Зайдем в скрипт "DragonPicker" и добавим новые строчки для реализации отображения имени игрока.
+
+```c#
+
+...
+
+public class DragonPicker : MonoBehaviour
+{
+    private void OnEnable() => YandexGame.GetDataEvent += GetLoadSave;
+    private void OnDisable() => YandexGame.GetDataEvent -= GetLoadSave;
+
+    public GameObject energyShieldPrefab;
+    public int numEnergyShield = 3;
+    public float energyShieldBottomY = -6;
+    public float energyShieldRadius = 1.5f;
+    public List<GameObject> shieldList;
+    public TextMeshProUGUI scoreGT;
+    public TextMeshProUGUI playerName; // new
+    
+...
+
+ public void GetLoadSave()
+    {
+        Debug.Log(YandexGame.savesData.score);
+
+        GameObject playerNamePrefabGUI = GameObject.Find("PlayerName"); // new
+        playerName = playerNamePrefabGUI.GetComponent<TextMeshProUGUI>(); // new
+        playerName.text = YandexGame.playerName; // new
+    }
+
+...
+
+```
+
+- Теперь можно проверить работоспособость отображения лучшего результата в главном меню и имени игрока над персонажем.
+
+
+
 ## Задание 2
 ### Описать не менее трех дополнительных функций Яндекс SDK, которые могут быть интегрированы в игру.
 
