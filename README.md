@@ -372,7 +372,55 @@ public class DragonPicker : MonoBehaviour
 ![Видео 28-11-2022 191302_Trim](https://user-images.githubusercontent.com/54228342/204299607-01da5cc2-acb4-4fb9-bba7-92d96a034a67.gif)
 
 - Как мы видим, лучший результат обновляется и имя героя отображается.
-- 
+- Реализуем еще один способ удержания игроков в игре - создадим таблицу лидеров. Зайдем в скрипт "DragonPicker" и добавим строчку.
+
+```c#
+
+...
+
+public void DragonEggDestroyed()
+    {
+        GameObject[] tDragonEggArray = GameObject.FindGameObjectsWithTag("Dragon Egg");
+        foreach (GameObject tGO in tDragonEggArray)
+            Destroy(tGO);
+
+        int shieldIndex = shieldList.Count - 1;
+        GameObject tShieldGo = shieldList[shieldIndex];
+        shieldList.RemoveAt(shieldIndex);
+        Destroy(tShieldGo);
+
+        if (shieldList.Count == 0)
+        {
+            GameObject scoreGO = GameObject.Find("Score");
+            scoreGT = scoreGO.GetComponent<TextMeshProUGUI>();
+            UserSave(int.Parse(scoreGT.text), YandexGame.savesData.bestScore);
+
+            YandexGame.NewLeaderboardScores("TOPPlayerScore", int.Parse(scoreGT.text)); // new
+
+            SceneManager.LoadScene("_0Scene");
+
+            GetLoadSave();
+        }
+    }
+    
+...
+
+```
+
+- Скопируем название таблицы лидеров, чтобы использовать в будущем. После этого создадим новую сборку и загрузим его на Яндекс.Игры. Дополнительно с этим нужно зайти в раздел Лидерборды и вставить название таблицы лидеров из скрипта.
+
+![image](https://user-images.githubusercontent.com/54228342/204542354-50e2f9f7-535f-48f4-a0d1-40fe28089d70.png)
+
+- В самом низу страницы нужно дать отображаемое название лидерборда и поставить определенные настройки. После этого нажать кнопку сохранить, тогда внизу появится название данного лидерборда.
+
+![image](https://user-images.githubusercontent.com/54228342/204543093-fec9b80d-0f68-4323-b78d-7bda2f78d24b.png)
+
+- Заходим в нашу игру в черновике и поиграем, собрав несколько очков. После этого зайдем в меню, где отображается лидерборд и посмотрим на результат.
+
+![image](https://user-images.githubusercontent.com/54228342/204545611-688a4c6a-e3bd-41e3-a4c4-e05a43b81fd7.png)
+
+- лидерборд работает и отображает количество очков. Вместо имени написано, что пользователь скрыт, так как игра запущена из черновика.
+
 
 ## Задание 2
 ### Описать не менее трех дополнительных функций Яндекс SDK, которые могут быть интегрированы в игру.
