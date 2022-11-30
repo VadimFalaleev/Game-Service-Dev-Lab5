@@ -67,6 +67,15 @@ MonoBehaviour:
   CheaterVideoAd:
     m_PersistentCalls:
       m_Calls: []
+  PurchaseSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  PurchaseFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  PromptDo:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3157483472541429372
 MonoBehaviour:
   m_ObjectHideFlags: 0

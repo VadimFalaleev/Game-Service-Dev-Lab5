@@ -32,5 +32,17 @@ public class CheckConnectYG : MonoBehaviour
         GameObject scoreBO = GameObject.Find("BestScore");
         scoreBest = scoreBO.GetComponent<TextMeshProUGUI>();
         scoreBest.text = "Best score: " + YandexGame.savesData.bestScore.ToString();
+
+        if (YandexGame.savesData.achiveMent[0] == null && GameObject.Find("ListAchive")) 
+        {
+
+        }
+        else
+        {
+            foreach(string value in YandexGame.savesData.achiveMent)
+            {
+                GameObject.Find("ListAchive").GetComponent<TextMeshProUGUI>().text += value + "\n";
+            }
+        }
     }
 }

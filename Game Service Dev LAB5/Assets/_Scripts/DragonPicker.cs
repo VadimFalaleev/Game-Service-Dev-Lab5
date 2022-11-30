@@ -47,7 +47,11 @@ public class DragonPicker : MonoBehaviour
         {
             GameObject scoreGO = GameObject.Find("Score");
             scoreGT = scoreGO.GetComponent<TextMeshProUGUI>();
-            UserSave(int.Parse(scoreGT.text), YandexGame.savesData.bestScore);
+
+            string[] achiveList = YandexGame.savesData.achiveMent;
+            achiveList[0] = "Береги щиты!";
+
+            UserSave(int.Parse(scoreGT.text), YandexGame.savesData.bestScore, achiveList);
 
             YandexGame.NewLeaderboardScores("TOPPlayerScore", int.Parse(scoreGT.text));
 
@@ -66,12 +70,13 @@ public class DragonPicker : MonoBehaviour
         playerName.text = YandexGame.playerName;
     }
 
-    public void UserSave(int currentScore, int currentBestScore)
+    public void UserSave(int currentScore, int currentBestScore, string[] currentAchiv)
     {
         YandexGame.savesData.score = currentScore;
 
         if (currentScore > currentBestScore) YandexGame.savesData.bestScore = currentScore;
 
+        YandexGame.savesData.achiveMent = currentAchiv;
         YandexGame.SaveProgress();
     }
 }
