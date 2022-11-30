@@ -419,7 +419,38 @@ public void DragonEggDestroyed()
 
 ![image](https://user-images.githubusercontent.com/54228342/204545611-688a4c6a-e3bd-41e3-a4c4-e05a43b81fd7.png)
 
-- лидерборд работает и отображает количество очков. Вместо имени написано, что пользователь скрыт, так как игра запущена из черновика.
+- Лидерборд работает и отображает количество очков. Вместо имени написано, что пользователь скрыт, так как игра запущена из черновика.
+- Последний инстурмент удержания игроков, который мы реализуем в этой лабораторной работе - достижения. Первым шагом добавим строку в скрипт "SavesYG".
+
+```c#
+
+namespace YG
+{
+    [System.Serializable]
+    public class SavesYG
+    {
+        public bool isFirstSession = true;
+        public string language = "ru";
+        public bool feedbackDone;
+        public bool promptDone;
+
+        // Ваши сохранения
+        public int score;
+        public int bestScore;
+        public string[] achiveMent; // new
+    }
+}
+
+```
+
+- Теперь на сцене главного меню создадим новую кнопку AchiveMent и напишем на ней ACHIVEMENT. Настроим расположение кнопок на сцене, после чего дублируем окно SettingMenu, назовем его Achive. В настройках кнопки AchiveMent поменяем функционал в OnClick, чтобы при нажатии на кнопку вместо окна настроек открывалось окно достижений.
+
+![image](https://user-images.githubusercontent.com/54228342/204718601-119d478f-643a-44e6-b283-badff9bb26a7.png)
+
+- В меню достижений создадим только текст, куда будут записываться все достижения. Нужно включить Auto Size и настроить размеры окна текста.
+
+![image](https://user-images.githubusercontent.com/54228342/204720205-beb0c69b-0efd-4189-8351-a9ad4aed9d37.png)
+
 
 
 ## Задание 2
