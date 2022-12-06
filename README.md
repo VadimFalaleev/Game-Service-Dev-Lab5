@@ -543,7 +543,74 @@ YandexGame.PaymentsData.
 ![image](https://user-images.githubusercontent.com/54228342/205902446-09d30ed1-49e4-45c3-b7b7-ce480f14609b.png)
 
 - Все получилось. Отображается аноним, так как игра еще в черновике, и количество максимально полученных очков за сессию. Далее можно по разному работать с дизайном лидерборда - подобрать ему рамку и фон, размер и шрифт текста и так далее, но для минимума этого зватит.
-- Далее перейдем к реализации системы достижений. 
+- Далее перейдем к реализации системы достижений. Создадим в окне для достижений 3 текста - так будет отображаться прогресс в получении достижений. Если текст красный, то достижение не получено, а если зеленый - получено.
+
+![image](https://user-images.githubusercontent.com/54228342/205917804-51f1d154-30f8-4774-b598-dd10b41d341b.png)
+
+- Создадим новую переменную в скрипте SavesYG. Она будет считать количество смертей игроков.
+
+```c#
+
+namespace YG
+{
+    [System.Serializable]
+    public class SavesYG
+    {
+        public bool isFirstSession = true;
+        public string language = "ru";
+        public bool feedbackDone;
+        public bool promptDone;
+
+        // Ваши сохранения
+        public int score;
+        public int bestScore;
+        public int deaths; // new
+    }
+}
+
+```
+
+- Теперь зайдем в скрипт DragonPicker и добавим в скрипт строчку, которая прибавляет к новой переменной 1 после того, когда игрок проиграл.
+
+```c#
+
+...
+
+public void UserSave(int currentScore, int currentBestScore)
+    {
+        YandexGame.savesData.score = currentScore;
+        if (currentScore > currentBestScore) YandexGame.savesData.bestScore = currentScore;
+        
+        YandexGame.savesData.deaths++; // new
+
+        YandexGame.SaveProgress();
+    }
+
+```
+
+- Создадим новый скрипт Achievements, который будет проверять, выполнил игрок определенные достижения, или нет.
+
+```c#
+
+using UnityEngine;
+using YG;
+
+public class Achievements : MonoBehaviour
+{
+    private GameObject[] achievements = GameObject.FindGameObjectsWithTag("Achievement");
+
+    private void Awake()
+    {
+        foreach(var a in achievements)
+        {
+            if (a.name == "10 Points" && YandexGame.savesData.bestScore >= 10) a.GetComponent<TextMesh>().color = Color.green;
+            if (a.name == "20 Points" && YandexGame.savesData.bestScore >= 20) a.GetComponent<TextMesh>().color = Color.green;
+            if (a.name == "First Death" && YandexGame.savesData.deaths >= 1) a.GetComponent<TextMesh>().color = Color.green;
+        }
+    }
+}
+
+```
 
 ## Выводы
 
