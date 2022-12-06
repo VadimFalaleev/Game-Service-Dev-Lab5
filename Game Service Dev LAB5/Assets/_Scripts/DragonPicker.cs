@@ -47,7 +47,6 @@ public class DragonPicker : MonoBehaviour
         {
             GameObject scoreGO = GameObject.Find("Score");
             scoreGT = scoreGO.GetComponent<TextMeshProUGUI>();
-
             UserSave(int.Parse(scoreGT.text), YandexGame.savesData.bestScore);
 
             YandexGame.NewLeaderboardScores("TOPPlayerScore", int.Parse(scoreGT.text));
@@ -69,8 +68,9 @@ public class DragonPicker : MonoBehaviour
     public void UserSave(int currentScore, int currentBestScore)
     {
         YandexGame.savesData.score = currentScore;
-
         if (currentScore > currentBestScore) YandexGame.savesData.bestScore = currentScore;
+        
+        YandexGame.savesData.deaths++;
 
         YandexGame.SaveProgress();
     }
