@@ -593,19 +593,22 @@ public void UserSave(int currentScore, int currentBestScore)
 ```c#
 
 using UnityEngine;
+using TMPro;
 using YG;
 
 public class Achievements : MonoBehaviour
 {
-    private GameObject[] achievements = GameObject.FindGameObjectsWithTag("Achievement");
+    private GameObject[] achievements;
 
     private void Awake()
     {
-        foreach(var a in achievements)
+        achievements = GameObject.FindGameObjectsWithTag("Achievement");
+
+        foreach (var a in achievements)
         {
-            if (a.name == "10 Points" && YandexGame.savesData.bestScore >= 10) a.GetComponent<TextMesh>().color = Color.green;
-            if (a.name == "20 Points" && YandexGame.savesData.bestScore >= 20) a.GetComponent<TextMesh>().color = Color.green;
-            if (a.name == "First Death" && YandexGame.savesData.deaths >= 1) a.GetComponent<TextMesh>().color = Color.green;
+            if (a.name == "10 Points" && YandexGame.savesData.bestScore >= 10) a.GetComponent<TextMeshProUGUI>().color = Color.green;
+            if (a.name == "20 Points" && YandexGame.savesData.bestScore >= 20) a.GetComponent<TextMeshProUGUI>().color = Color.green;
+            if (a.name == "First Death" && YandexGame.savesData.deaths >= 1) a.GetComponent<TextMeshProUGUI>().color = Color.green;
         }
     }
 }
