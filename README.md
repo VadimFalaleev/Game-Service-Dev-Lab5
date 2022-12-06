@@ -606,10 +606,15 @@ public class Achievements : MonoBehaviour
 
         foreach (var a in achievements)
         {
-            if (a.name == "10 Points" && YandexGame.savesData.bestScore >= 10) a.GetComponent<TextMeshProUGUI>().color = Color.green;
-            if (a.name == "20 Points" && YandexGame.savesData.bestScore >= 20) a.GetComponent<TextMeshProUGUI>().color = Color.green;
-            if (a.name == "First Death" && YandexGame.savesData.deaths >= 1) a.GetComponent<TextMeshProUGUI>().color = Color.green;
+            if (a.name == "10 Points" && YandexGame.savesData.bestScore >= 10) AchievementComplete(a);
+            if (a.name == "20 Points" && YandexGame.savesData.bestScore >= 20) AchievementComplete(a);
+            if (a.name == "First Death" && YandexGame.savesData.deaths >= 1) AchievementComplete(a);
         }
+    }
+
+    void AchievementComplete(GameObject text)
+    {
+        text.GetComponent<TextMeshProUGUI>().color = Color.green;
     }
 }
 
